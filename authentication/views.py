@@ -3,7 +3,10 @@ from django.shortcuts import (
   render,
   redirect
 )
-from django.contrib.auth import login
+from django.contrib.auth import (
+  login,
+  logout
+)
 
 # Local imports 
 from authentication.forms import (
@@ -11,7 +14,7 @@ from authentication.forms import (
 )
 
 # Create your views here.
-def registration(request):
+def registration_view(request):
   if request.method == 'POST':
     form = RegisterUser(request.POST)
     if form.is_valid():
@@ -25,3 +28,7 @@ def registration(request):
   }
   template_name = 'auth/registration.html'
   return render(request, template_name, context)
+
+def logout_view(request):
+  logout(request)
+  return redirect('blogs_index')
