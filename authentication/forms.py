@@ -3,7 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import (
   UserCreationForm,
-  AuthenticationForm
+  AuthenticationForm,
+  PasswordChangeForm
 )
 
 class RegisterUser(UserCreationForm):
@@ -38,5 +39,22 @@ class LoginUser(AuthenticationForm):
   )
   password = forms.CharField(
     label='Password',
+    widget=forms.PasswordInput(attrs={'class': 'form-control'})
+  )
+
+class ChangePasswordUser(PasswordChangeForm):
+  """
+    A user password change form
+  """
+  old_password = forms.CharField(
+    label="Please enter old password",
+    widget=forms.PasswordInput(attrs={'class': 'form-control'})
+  )
+  new_password1 = forms.CharField(
+    label="Please enter new password",
+    widget=forms.PasswordInput(attrs={'class': 'form-control'})
+  )
+  new_password2 = forms.CharField(
+    label="Please confirm new password",
     widget=forms.PasswordInput(attrs={'class': 'form-control'})
   )

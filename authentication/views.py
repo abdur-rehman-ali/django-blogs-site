@@ -6,13 +6,15 @@ from django.shortcuts import (
 from django.contrib.auth import (
   login,
   logout,
-  authenticate
+  authenticate,
+  update_session_auth_hash
 )
 
 # Local imports 
 from authentication.forms import (
   RegisterUser,
-  LoginUser
+  LoginUser,
+  ChangePasswordUser
 )
 
 # Create your views here.
@@ -49,6 +51,21 @@ def login_view(request):
     'form': form
   }
   template_name = 'auth/login.html'
+  return render(request, template_name, context)
+
+def change_password_view(request):
+  if request.method == 'POST':
+    form = ChangePasswordUser(request.user, request.POST)
+    if form.is_valid():
+      user = form.save()
+      update_session_auth_hash(request, user)
+      return redirect('blogs_index')
+  else:
+    form = ChangePasswordUser(request.user, label_suffix='')
+  context = {
+    'form': form
+  }
+  template_name = 'auth/change_password.html'
   return render(request, template_name, context)
 
 def logout_view(request):
