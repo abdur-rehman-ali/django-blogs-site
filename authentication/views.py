@@ -5,12 +5,14 @@ from django.shortcuts import (
 )
 from django.contrib.auth import (
   login,
-  logout
+  logout,
+  authenticate
 )
 
 # Local imports 
 from authentication.forms import (
-  RegisterUser
+  RegisterUser,
+  LoginUser
 )
 
 # Create your views here.
@@ -27,6 +29,26 @@ def registration_view(request):
     'form': form
   }
   template_name = 'auth/registration.html'
+  return render(request, template_name, context)
+
+def login_view(request):
+  if request.method == 'POST':
+    form = LoginUser(request, data=request.POST)
+    if form.is_valid():
+      username = form.cleaned_data.get('username')
+      password = form.cleaned_data.get('password')
+      user = authenticate(request, username=username, password=password)
+      if user is not None:
+        login(request, user)
+        return redirect('blogs_index')
+      else: 
+        return redirect('login')
+  else:
+    form = LoginUser()
+  context = {
+    'form': form
+  }
+  template_name = 'auth/login.html'
   return render(request, template_name, context)
 
 def logout_view(request):
