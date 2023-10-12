@@ -9,11 +9,14 @@
             <div class="card-body">
               <h5 class="card-title">{{ blog.title }}</h5>
               <p class="card-text">{{ blog.content }}</p>
+              <p class="card-text"><strong>Author : </strong> {{ blog.user }}</p>
               <p class="card-text"><small class="text-muted">Published At: {{blog.published_at}}</small></p>
-              <div class="btn-group" role="group" aria-label="Edit and Delete Buttons">
-                <a class="btn btn-primary text-white" href="{% url 'blogs_edit' blog.id %}">Edit</a>
-                <a class="btn btn-danger text-white" href="{% url 'blogs_destroy' blog.id %}">Delete</a>
-              </div>
+              {% if request.user == blog.user %}
+                <div class="btn-group" role="group" aria-label="Edit and Delete Buttons">
+                  <a class="btn btn-primary text-white" href="{% url 'blogs_edit' blog.id %}">Edit</a>
+                  <a class="btn btn-danger text-white" href="{% url 'blogs_destroy' blog.id %}">Delete</a>
+                </div>
+              {% endif %}
             </div>
           </div>
         </div>

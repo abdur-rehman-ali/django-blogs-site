@@ -15,11 +15,14 @@ def index(request):
   template = 'blog/index.html'
   return render(request, template, context)
 
+
 def new(request):
   if request.method == 'POST':
     form = BlogForm(request.POST)
     if form.is_valid():
-      form.save()
+      title = form.cleaned_data.get('title')
+      content = form.cleaned_data.get('content')
+      Blog.objects.create(title=title, content=content, user=request.user)
       return HttpResponseRedirect(reverse('blogs_index'))
   else: 
     form = BlogForm(label_suffix='')
