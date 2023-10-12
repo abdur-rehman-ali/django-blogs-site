@@ -6,4 +6,4 @@ from blog.models import Blog
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-  list_display = ['id', 'title', 'content']
+  list_display = ['id', 'title', 'content', 'user']
